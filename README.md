@@ -18,7 +18,7 @@ Handmade Haven is a user-friendly, feature-rich e-commerce platform built specif
 - Ensure safe, secure, and efficient transactions.
 
 # 🚀 Features
--🧑‍💼 Multi-role Access: Admin, Seller, Customer roles with dedicated dashboards.
+- 🧑‍💼 Multi-role Access: Admin, Seller, Customer roles with dedicated dashboards.
 - 🛒 Product Catalog: Categories for easy navigation and discovery.
 - 💳 Secure Checkout: Integrated with Stripe or PayPal for seamless payments.
 - 📦 Order Management: Real-time tracking and seller-side inventory control.
