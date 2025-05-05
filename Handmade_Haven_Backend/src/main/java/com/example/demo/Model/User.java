@@ -9,17 +9,16 @@ public class User {
 
 	@Id @GeneratedValue
 	private Long id;
-	
 	private String name;
 	private String email;
 	private String password;
-	private String role; // e.g., CUSTOMER, SELLER, ADMIN
+	private String role; // e.g., CUSTOMER, ADMIN
 	
 	// Optional
 	private String address;
-	private String phone;
+	private int phone;
 	
-	public User(Long id, String name, String email, String password, String role, String address, String phone) {
+	public User(Long id, String name, String email, String password, String role, String address, int phone) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -78,11 +77,11 @@ public class User {
 		this.address = address;
 	}
 
-	public String getPhone() {
+	public int Phone() {
 		return phone;
 	}
 
-	public void setPhone(String phone) {
+	public void setPhone(int phone) {
 		this.phone = phone;
 	}
 	
