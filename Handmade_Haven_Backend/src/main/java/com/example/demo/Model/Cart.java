@@ -1,7 +1,6 @@
 package com.example.demo.Model;
 
 import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,4 +17,10 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart")
     private List<CartItem> items;
+
+	public void setUser(User user2) {
+		// TODO Auto-generated method stub
+		
+	}
+    
 }
