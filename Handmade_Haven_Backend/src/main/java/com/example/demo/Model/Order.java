@@ -2,12 +2,16 @@ package com.example.demo.Model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
-
+@Entity
+@Table(name = "`order`")
 public class Order {
 	@Id @GeneratedValue
     private Long id;
