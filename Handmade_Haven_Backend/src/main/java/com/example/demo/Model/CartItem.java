@@ -15,10 +15,8 @@ public class CartItem {
 
 	    @ManyToOne
 	    private Product product;
-
-	    private Integer quantity;
-
-		public Integer getQuantity() {
+	    private int quantity;
+		public int getQuantity() {
 			return quantity;
 		}
 
