@@ -7,19 +7,21 @@ import jakarta.persistence.Id;
 @Entity
 public class User {
 
-	@Id @GeneratedValue
+	@Id 
+	@GeneratedValue
 	private Long id;
+
 	private String name;
 	private String email;
 	private String password;
 	private String role; // e.g., CUSTOMER, ADMIN
-	
-	// Optional
 	private String address;
-	private int phone;
-	
-	public User(Long id, String name, String email, String password, String role, String address, int phone) {
-		super();
+	private String phone;
+
+	public User() {
+	}
+
+	public User(Long id, String name, String email, String password, String role, String address, String phone) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -77,13 +79,11 @@ public class User {
 		this.address = address;
 	}
 
-	public int Phone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
 }
-	

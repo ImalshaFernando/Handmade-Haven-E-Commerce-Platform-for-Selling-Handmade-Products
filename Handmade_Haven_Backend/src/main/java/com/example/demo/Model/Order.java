@@ -1,37 +1,57 @@
 package com.example.demo.Model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "`order`")
+@Table(name = "`order`") // 'order' is a reserved keyword in SQL
 public class Order {
-	@Id @GeneratedValue
-    private Long id;
 
-    @ManyToOne
-    private User user;
+	@Id
+	@GeneratedValue
+	private Long id;
 
-    private LocalDateTime orderDate;
-    private Double totalPrice;
-    private String status; // PENDING, SHIPPED, DELIVERED, CANCELLED
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> items;
+	private LocalDateTime orderDate;
 
-	public Double getTotalPrice() {
-		return totalPrice;
+	private BigDecimal totalPrice;
+
+	private String status; // e.g., PENDING, SHIPPED, DELIVERED, CANCELLED
+
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<OrderItem> items;
+
+	public Order() {
 	}
 
-	public void setTotalPrice(Double totalPrice) {
+	public Order(User user, LocalDateTime orderDate, BigDecimal totalPrice, String status, List<OrderItem> items) {
+		this.user = user;
+		this.orderDate = orderDate;
 		this.totalPrice = totalPrice;
+		this.status = status;
+		this.items = items;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public LocalDateTime getOrderDate() {
@@ -42,11 +62,27 @@ public class Order {
 		this.orderDate = orderDate;
 	}
 
+	public BigDecimal getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(BigDecimal totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public List<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(List<OrderItem> items) {
+		this.items = items;
 	}
 }

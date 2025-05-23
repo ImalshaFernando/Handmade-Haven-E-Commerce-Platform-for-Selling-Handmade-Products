@@ -1,25 +1,47 @@
 package com.example.demo.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Product {
-	@Id @GeneratedValue
+
+	@Id
+	@GeneratedValue
 	private Long id;
 
-    private String name;
-    private String description;
-    private Double price;
-    private String imageUrl;
-    private int stock;
-    
-    @ManyToOne
-    private User seller;
+	@NotBlank
+	private String name;
 
-    private String category;
+	private String description;
+
+	@DecimalMin("0.0")
+	private Double price;
+
+	private String imageUrl;
+
+	@Min(0)
+	private int stock;
+
+	@ManyToOne
+	@JoinColumn(name = "seller_id")
+	private User seller;
+
+	private String category;
+
+	public Product() {
+	}
+
+	public Product(Long id, String name, String description, Double price, String imageUrl, int stock, User seller, String category) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.imageUrl = imageUrl;
+		this.stock = stock;
+		this.seller = seller;
+		this.category = category;
+	}
 
 	public Long getId() {
 		return id;
@@ -84,5 +106,4 @@ public class Product {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-    
 }
