@@ -13,41 +13,44 @@ import java.util.Optional;
 public class ProductController {
 
     @Autowired
-    private ProductRepo productrepo;
+    private ProductRepo productRepo;
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productrepo.findAll();
+    public ResponseEntity<List<Product>> getAllProducts() {
+        return ResponseEntity.ok(productRepo.findAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<Product> getProductById(@PathVariable Long id) {
-        return productrepo.findById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        return productRepo.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/category/{category}")
-    public List<Product> getProductsByCategory(@PathVariable String category) {
-        return productrepo.findByCategory(category);
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) {
+        return ResponseEntity.ok(productRepo.findByCategory(category));
     }
 
     @GetMapping("/seller/{sellerId}")
-    public List<Product> getProductsBySeller(@PathVariable Long sellerId) {
-        return productrepo.findBySellerId(sellerId);
+    public ResponseEntity<List<Product>> getProductsBySeller(@PathVariable Long sellerId) {
+        return ResponseEntity.ok(productRepo.findBySellerId(sellerId));
     }
 
     @GetMapping("/search")
-    public List<Product> searchProductsByName(@RequestParam String name) {
-        return productrepo.findByNameContainingIgnoreCase(name);
+    public ResponseEntity<List<Product>> searchProductsByName(@RequestParam String name) {
+        return ResponseEntity.ok(productRepo.findByNameContainingIgnoreCase(name));
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productrepo.save(product);
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product savedProduct = productRepo.save(product);
+        return ResponseEntity.status(201).body(savedProduct);
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-        return productrepo.findById(id)
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+        return productRepo.findById(id)
                 .map(product -> {
                     product.setName(updatedProduct.getName());
                     product.setDescription(updatedProduct.getDescription());
@@ -56,13 +59,18 @@ public class ProductController {
                     product.setStock(updatedProduct.getStock());
                     product.setCategory(updatedProduct.getCategory());
                     product.setSeller(updatedProduct.getSeller());
-                    return productrepo.save(product);
+                    return ResponseEntity.ok(productRepo.save(product));
                 })
-                .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-    	productrepo.deleteById(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        if (productRepo.existsById(id)) {
+            productRepo.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

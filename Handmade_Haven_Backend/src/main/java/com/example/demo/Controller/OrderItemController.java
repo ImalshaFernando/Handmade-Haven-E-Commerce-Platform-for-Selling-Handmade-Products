@@ -13,36 +13,43 @@ import java.util.Optional;
 public class OrderItemController {
 
     @Autowired
-    private OrderItemRepo orderitemRepo;
+    private OrderItemRepo orderItemRepo;
 
     @GetMapping
-    public List<OrderItem> getAllOrderItems() {
-        return orderitemRepo.findAll();
+    public ResponseEntity<List<OrderItem>> getAllOrderItems() {
+        return ResponseEntity.ok(orderItemRepo.findAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<OrderItem> getOrderItemById(@PathVariable Long id) {
-        return orderitemRepo.findById(id);
+    public ResponseEntity<OrderItem> getOrderItemById(@PathVariable Long id) {
+        return orderItemRepo.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public OrderItem createOrderItem(@RequestBody OrderItem orderItem) {
-        return orderitemRepo.save(orderItem);
+    public ResponseEntity<OrderItem> createOrderItem(@RequestBody OrderItem orderItem) {
+        return ResponseEntity.status(201).body(orderItemRepo.save(orderItem));
     }
 
     @PutMapping("/{id}")
-    public OrderItem updateOrderItem(@PathVariable Long id, @RequestBody OrderItem updatedItem) {
-        return orderitemRepo.findById(id)
+    public ResponseEntity<OrderItem> updateOrderItem(@PathVariable Long id, @RequestBody OrderItem updatedItem) {
+        return orderItemRepo.findById(id)
                 .map(item -> {
                     item.setQuantity(updatedItem.getQuantity());
                     item.setPrice(updatedItem.getPrice());
-                    return orderitemRepo.save(item);
+                    return ResponseEntity.ok(orderItemRepo.save(item));
                 })
-                .orElseThrow(() -> new RuntimeException("OrderItem not found with id " + id));
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOrderItem(@PathVariable Long id) {
-    	orderitemRepo.deleteById(id);
+    public ResponseEntity<Void> deleteOrderItem(@PathVariable Long id) {
+        if (orderItemRepo.existsById(id)) {
+            orderItemRepo.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -19,23 +19,34 @@ public class CartController {
 
     // Get cart by user ID
     @GetMapping("/user/{userId}")
-    public Cart getCartByUserId(@PathVariable Long userId) {
-        User user = userRepo.findById(userId).orElse(null);
-        if (user != null) {
-            return cartRepo.findByUser(user);
-        }
-        return null;
+    public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) {
+        return userRepo.findById(userId)
+                .map(user -> {
+                    Cart cart = cartRepo.findByUser(user);
+                    if (cart != null) {
+                        return ResponseEntity.ok(cart);
+                    } else {
+                        return ResponseEntity.notFound().build();
+                    }
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // Create a new cart for a user (optional endpoint)
     @PostMapping("/create/{userId}")
-    public Cart createCart(@PathVariable Long userId) {
-        User user = userRepo.findById(userId).orElse(null);
-        if (user != null) {
-            Cart cart = new Cart();
-            cart.setUser(user);
-            return cartRepo.save(cart);
-        }
-        return null;
+    public ResponseEntity<Cart> createCart(@PathVariable Long userId) {
+        return userRepo.findById(userId)
+                .map(user -> {
+                    // Check if cart already exists for user
+                    Cart existingCart = cartRepo.findByUser(user);
+                    if (existingCart != null) {
+                        return ResponseEntity.status(409).body(existingCart); // Conflict, cart already exists
+                    }
+                    Cart cart = new Cart();
+                    cart.setUser(user);
+                    Cart savedCart = cartRepo.save(cart);
+                    return ResponseEntity.status(201).body(savedCart);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }

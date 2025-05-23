@@ -13,38 +13,45 @@ import java.util.Optional;
 public class OrderController {
 
     @Autowired
-    private OrderRepo orderrepo;
+    private OrderRepo orderRepo;
 
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderrepo.findAll();
+    public ResponseEntity<List<Order>> getAllOrders() {
+        return ResponseEntity.ok(orderRepo.findAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<Order> getOrderById(@PathVariable Long id) {
-        return orderrepo.findById(id);
+    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
+        return orderRepo.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
-        return orderrepo.save(order);
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+        Order savedOrder = orderRepo.save(order);
+        return ResponseEntity.status(201).body(savedOrder);
     }
 
     @PutMapping("/{id}")
-    public Order updateOrder(@PathVariable Long id, @RequestBody Order updatedOrder) {
-        return orderrepo.findById(id)  
+    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order updatedOrder) {
+        return orderRepo.findById(id)
                 .map(order -> {
                     order.setOrderDate(updatedOrder.getOrderDate());
                     order.setStatus(updatedOrder.getStatus());
                     order.setTotalPrice(updatedOrder.getTotalPrice());
-                    return orderrepo.save(order);
+                    return ResponseEntity.ok(orderRepo.save(order));
                 })
-                .orElseThrow(() -> new RuntimeException("Order not found with id " + id));
+                .orElse(ResponseEntity.notFound().build());
     }
 
-
     @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable Long id) {
-        orderrepo.deleteById(id);
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        if (orderRepo.existsById(id)) {
+            orderRepo.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

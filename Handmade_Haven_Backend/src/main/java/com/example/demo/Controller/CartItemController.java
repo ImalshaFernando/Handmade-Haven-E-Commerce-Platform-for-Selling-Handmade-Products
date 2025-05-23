@@ -13,36 +13,45 @@ import java.util.Optional;
 public class CartItemController {
 
     @Autowired
-    private CartItemRepo cartitemRepo;
+    private CartItemRepo cartItemRepo;
 
     @GetMapping
-    public List<CartItem> getAllCartItems() {
-        return cartitemRepo.findAll();
+    public ResponseEntity<List<CartItem>> getAllCartItems() {
+        return ResponseEntity.ok(cartItemRepo.findAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<CartItem> getCartItemById(@PathVariable Long id) {
-        return cartitemRepo.findById(id);
+    public ResponseEntity<CartItem> getCartItemById(@PathVariable Long id) {
+        return cartItemRepo.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public CartItem createCartItem(@RequestBody CartItem cartItem) {
-        return cartitemRepo.save(cartItem);
+    public ResponseEntity<CartItem> createCartItem(@RequestBody CartItem cartItem) {
+        CartItem savedItem = cartItemRepo.save(cartItem);
+        return ResponseEntity.status(201).body(savedItem);
     }
 
     @PutMapping("/{id}")
-    public CartItem updateCartItem(@PathVariable Long id, @RequestBody CartItem updatedItem) {
-        return cartitemRepo.findById(id)
+    public ResponseEntity<CartItem> updateCartItem(@PathVariable Long id, @RequestBody CartItem updatedItem) {
+        return cartItemRepo.findById(id)
                 .map(item -> {
                     item.setQuantity(updatedItem.getQuantity());
-                    // you may also allow updating product or cart if needed
-                    return cartitemRepo.save(item);
+                    // optionally update product or cart if needed
+                    CartItem savedItem = cartItemRepo.save(item);
+                    return ResponseEntity.ok(savedItem);
                 })
-                .orElseThrow(() -> new RuntimeException("CartItem not found with id " + id));
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCartItem(@PathVariable Long id) {
-    	cartitemRepo.deleteById(id);
+    public ResponseEntity<Void> deleteCartItem(@PathVariable Long id) {
+        if (cartItemRepo.existsById(id)) {
+            cartItemRepo.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
