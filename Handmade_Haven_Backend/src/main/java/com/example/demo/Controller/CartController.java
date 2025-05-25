@@ -5,7 +5,7 @@ import com.example.demo.Model.User;
 import com.example.demo.Repository.CartRepo;
 import com.example.demo.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity; // ✅ THIS LINE FIXES THE ERROR
+import org.springframework.http.ResponseEntity; 
 import org.springframework.web.bind.annotation.*;
 
 @RestController

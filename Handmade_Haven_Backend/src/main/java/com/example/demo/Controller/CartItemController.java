@@ -4,6 +4,8 @@ import com.example.demo.Model.CartItem;
 import com.example.demo.Repository.CartItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+
 
 import java.util.List;
 import java.util.Optional;
