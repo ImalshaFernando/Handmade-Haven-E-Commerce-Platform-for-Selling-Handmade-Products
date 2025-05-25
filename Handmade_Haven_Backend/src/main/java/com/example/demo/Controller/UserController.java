@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/phone/{phone}")
-    public ResponseEntity<UserDTO> getUserByPhone(@PathVariable int phone) {
+    public ResponseEntity<UserDTO> getUserByPhone(@PathVariable String phone) {
         return userRepo.findByPhone(phone)
             .map(user -> ResponseEntity.ok(convertToDTO(user)))
             .orElse(ResponseEntity.notFound().build());
