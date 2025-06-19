@@ -1,0 +1,47 @@
+/* index.css */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Reset default margin and padding for all elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set a default font, background, and text color for the whole app */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Make images scale nicely */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Remove underline from links and add hover effect */
+a {
+  color: #66a471;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Utility for container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
