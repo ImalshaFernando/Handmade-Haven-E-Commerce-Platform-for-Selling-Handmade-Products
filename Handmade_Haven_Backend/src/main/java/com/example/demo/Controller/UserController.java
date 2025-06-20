@@ -1,14 +1,13 @@
 package com.example.demo.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-
-
 import com.example.demo.Model.User;
 import com.example.demo.Repository.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -18,49 +17,50 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
-    private UserDTO convertToDTO(User user) {
-        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getAddress(), user.Phone());
-    }
-
+    // Get all users
     @GetMapping("/")
-    public List<UserDTO> getAllUsers() {
-        return userRepo.findAll().stream().map(this::convertToDTO).toList();
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
     }
 
+    // Get user by ID
     @GetMapping("/id/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userRepo.findById(id)
-            .map(user -> ResponseEntity.ok(convertToDTO(user)))
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    // Get user by name
     @GetMapping("/name/{name}")
-    public ResponseEntity<UserDTO> getUserByName(@PathVariable String name) {
+    public ResponseEntity<User> getUserByName(@PathVariable String name) {
         return userRepo.findByName(name)
-            .map(user -> ResponseEntity.ok(convertToDTO(user)))
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    // Get user by phone
     @GetMapping("/phone/{phone}")
-    public ResponseEntity<UserDTO> getUserByPhone(@PathVariable String phone) {
+    public ResponseEntity<User> getUserByPhone(@PathVariable String phone) {
         return userRepo.findByPhone(phone)
-            .map(user -> ResponseEntity.ok(convertToDTO(user)))
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    // Get user by address
     @GetMapping("/address/{address}")
-    public ResponseEntity<UserDTO> getUserByAddress(@PathVariable String address) {
+    public ResponseEntity<User> getUserByAddress(@PathVariable String address) {
         return userRepo.findByAddress(address)
-            .map(user -> ResponseEntity.ok(convertToDTO(user)))
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Prefer POST with body for email search to avoid logging sensitive info
+    // Get user by email (using POST to avoid exposing email in logs)
     @PostMapping("/findByEmail")
-    public ResponseEntity<UserDTO> getUserByEmail(@RequestBody Map<String, String> body) {
+    public ResponseEntity<User> getUserByEmail(@RequestBody Map<String, String> body) {
         String email = body.get("email");
         return userRepo.findByEmail(email)
-            .map(user -> ResponseEntity.ok(convertToDTO(user)))
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

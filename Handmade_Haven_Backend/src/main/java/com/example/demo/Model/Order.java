@@ -7,11 +7,11 @@ import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "`order`") // 'order' is a reserved keyword in SQL
+@Table(name = "orders") 
 public class Order {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

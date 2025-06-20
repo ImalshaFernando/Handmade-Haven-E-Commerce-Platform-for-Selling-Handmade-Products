@@ -7,7 +7,7 @@ import jakarta.validation.constraints.*;
 public class Product {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank
