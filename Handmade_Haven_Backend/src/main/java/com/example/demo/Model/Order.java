@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -16,15 +19,17 @@ public class Order {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@JsonBackReference
 	private User user;
 
 	private LocalDateTime orderDate;
 
 	private BigDecimal totalPrice;
 
-	private String status; // e.g., PENDING, SHIPPED, DELIVERED, CANCELLED
+	private String status; //  PENDING, SHIPPED, DELIVERED, CANCELLED
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<OrderItem> items;
 
 	public Order() {

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/order-items")
+@RequestMapping("/order-items")
 public class OrderItemController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class OrderItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderItem> getOrderItemById(@PathVariable Long id) {
+    public ResponseEntity<OrderItem> getOrderItemById(@PathVariable("id") Long id) {
         return orderItemRepo.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -35,7 +35,7 @@ public class OrderItemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderItem> updateOrderItem(@PathVariable Long id, @RequestBody OrderItem updatedItem) {
+    public ResponseEntity<OrderItem> updateOrderItem(@PathVariable("id") Long id, @RequestBody OrderItem updatedItem) {
         return orderItemRepo.findById(id)
                 .map(item -> {
                     item.setQuantity(updatedItem.getQuantity());
@@ -46,7 +46,7 @@ public class OrderItemController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrderItem(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteOrderItem(@PathVariable("id") Long id) {
         if (orderItemRepo.existsById(id)) {
             orderItemRepo.deleteById(id);
             return ResponseEntity.noContent().build();

@@ -22,7 +22,7 @@ public class CartController {
 
     // Get cart by user ID
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) {
+    public ResponseEntity<Cart> getCartByUserId(@PathVariable("userId") Long userId) {
         Optional<User> userOptional = userRepo.findById(userId);
 
         if (userOptional.isEmpty()) {
@@ -40,7 +40,7 @@ public class CartController {
 
     // Create a new cart for a user
     @PostMapping("/create/{userId}")
-    public ResponseEntity<?> createCart(@PathVariable Long userId) {
+    public ResponseEntity<?> createCart(@PathVariable("userId") Long userId) {
         Optional<User> userOptional = userRepo.findById(userId);
 
         if (userOptional.isEmpty()) {

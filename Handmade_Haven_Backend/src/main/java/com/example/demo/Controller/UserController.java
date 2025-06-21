@@ -25,7 +25,7 @@ public class UserController {
 
     // Get user by ID
     @GetMapping("/id/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
         return userRepo.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -33,7 +33,7 @@ public class UserController {
 
     // Get user by name
     @GetMapping("/name/{name}")
-    public ResponseEntity<User> getUserByName(@PathVariable String name) {
+    public ResponseEntity<User> getUserByName(@PathVariable("name") String name) {
         return userRepo.findByName(name)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -41,7 +41,7 @@ public class UserController {
 
     // Get user by phone
     @GetMapping("/phone/{phone}")
-    public ResponseEntity<User> getUserByPhone(@PathVariable String phone) {
+    public ResponseEntity<User> getUserByPhone(@PathVariable("phone") String phone) {
         return userRepo.findByPhone(phone)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -49,7 +49,7 @@ public class UserController {
 
     // Get user by address
     @GetMapping("/address/{address}")
-    public ResponseEntity<User> getUserByAddress(@PathVariable String address) {
+    public ResponseEntity<User> getUserByAddress(@PathVariable("address") String address) {
         return userRepo.findByAddress(address)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

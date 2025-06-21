@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
@@ -23,19 +23,19 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable ("id") Long id) {
         return productRepo.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) {
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("category") String category) {
         return ResponseEntity.ok(productRepo.findByCategory(category));
     }
 
     @GetMapping("/seller/{sellerId}")
-    public ResponseEntity<List<Product>> getProductsBySeller(@PathVariable Long sellerId) {
+    public ResponseEntity<List<Product>> getProductsBySeller(@PathVariable("sellerId") Long sellerId) {
         return ResponseEntity.ok(productRepo.findBySellerId(sellerId));
     }
 
@@ -51,7 +51,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product updatedProduct) {
         return productRepo.findById(id)
                 .map(product -> {
                     product.setName(updatedProduct.getName());
@@ -67,7 +67,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         if (productRepo.existsById(id)) {
             productRepo.deleteById(id);
             return ResponseEntity.noContent().build();

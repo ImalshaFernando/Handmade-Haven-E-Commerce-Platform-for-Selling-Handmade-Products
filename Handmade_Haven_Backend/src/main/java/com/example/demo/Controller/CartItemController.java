@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/cart-items")
+@RequestMapping("/cart-items")
 public class CartItemController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class CartItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CartItem> getCartItemById(@PathVariable Long id) {
+    public ResponseEntity<CartItem> getCartItemById(@PathVariable("id") Long id) {
         return cartItemRepo.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -36,7 +36,7 @@ public class CartItemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CartItem> updateCartItem(@PathVariable Long id, @RequestBody CartItem updatedItem) {
+    public ResponseEntity<CartItem> updateCartItem(@PathVariable("id") Long id, @RequestBody CartItem updatedItem) {
         return cartItemRepo.findById(id)
                 .map(item -> {
                     item.setQuantity(updatedItem.getQuantity());
