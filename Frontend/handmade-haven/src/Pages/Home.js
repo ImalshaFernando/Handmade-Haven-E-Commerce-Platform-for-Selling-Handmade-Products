@@ -6,9 +6,9 @@ export default function Home() {
     <div className="container mt-4">
       <div className="p-5 mb-4 bg-light rounded-3 shadow-sm">
         <div className="container-fluid py-5">
-          <h1 className="display-5 fw-bold text-primary">Welcome to Handmade Haven</h1>
+          <h1 className="display-5 fw-bold text-success">Welcome to Handmade Haven</h1>
           <p className="col-md-8 fs-4">Explore our collection of handcrafted gifts made with love 💝</p>
-          <Link to="/products" className="btn btn-primary btn-lg">Start Shopping</Link>
+          <Link to="/products" className="btn btn-success btn-lg">Start Shopping</Link>
         </div>
       </div>
 
@@ -20,7 +20,7 @@ export default function Home() {
               <div className="card-body">
                 <h5 className="card-title">{cat}</h5>
                 <p className="card-text">Beautifully crafted {cat.toLowerCase()}.</p>
-                <Link to={`/products?category=${cat}`} className="btn btn-outline-primary">View</Link>
+                <Link to={`/products?category=${cat}`} className="btn btn-outline-success">View</Link>
               </div>
             </div>
           </div>
